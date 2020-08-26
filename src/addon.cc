@@ -7,7 +7,8 @@
 
 using namespace torchjs;
 
-Napi::Object Init(Napi::Env env, Napi::Object exports) {
+Napi::Object Init(Napi::Env env, Napi::Object exports)
+{
   aten::Init(env, exports);
   constants::Init(env, exports);
   ScriptModule::Init(env, exports);
@@ -15,4 +16,4 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
   return exports;
 }
 
-NODE_API_MODULE(JSTorch, Init);
+NODE_API_MODULE(torchjs, Init);

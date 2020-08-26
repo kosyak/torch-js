@@ -12,12 +12,18 @@ export class Tensor {
   static fromObject({data, shape}: ObjectTensor): Tensor;
   toObject(): ObjectTensor;
   toString(): string;
+  cpu(): Tensor;
+  cuda(): Tensor;
 }
 
 export class ScriptModule {
   constructor(path: string);
-  forward(...inputs: Tensor[]): Tensor;
+  forward(inputs: Tensor): any;
+  forward(...inputs: Tensor[]): any;
   toString(): string;
+  cpu(): ScriptModule;
+  cuda(): ScriptModule;
+  isCudaAvailable(): boolean;
 }
 
 export function rand(shape: number[], options?: {dtype?: number}): Tensor;

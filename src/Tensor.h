@@ -5,23 +5,28 @@
 #include <napi.h>
 #include <torch/torch.h>
 
-namespace torchjs {
+namespace torchjs
+{
 
-class Tensor : public Napi::ObjectWrap<Tensor> {
-public:
-  static Napi::Object Init(Napi::Env, Napi::Object exports);
-  static Napi::Object FromTensor(Napi::Env, const torch::Tensor &);
-  Tensor(const Napi::CallbackInfo &);
+  class Tensor : public Napi::ObjectWrap<Tensor>
+  {
+  public:
+    static Napi::Object Init(Napi::Env, Napi::Object exports);
+    static Napi::Object FromTensor(Napi::Env, const torch::Tensor &);
+    static bool IsInstance(Napi::Object &);
+    Tensor(const Napi::CallbackInfo &);
 
-  torch::Tensor tensor();
+    torch::Tensor tensor();
 
-private:
-  static Napi::FunctionReference constructor;
-  torch::Tensor tensor_;
+  private:
+    torch::Tensor tensor_;
+    static Napi::FunctionReference constructor;
 
-  Napi::Value toString(const Napi::CallbackInfo &);
-  Napi::Value toObject(const Napi::CallbackInfo &);
-  static Napi::Value fromObject(const Napi::CallbackInfo &);
-};
+    Napi::Value toString(const Napi::CallbackInfo &);
+    Napi::Value toObject(const Napi::CallbackInfo &);
+    static Napi::Value fromObject(const Napi::CallbackInfo &);
+    Napi::Value cpu(const Napi::CallbackInfo &info);
+    Napi::Value cuda(const Napi::CallbackInfo &info);
+  };
 
 } // namespace torchjs

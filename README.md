@@ -120,7 +120,7 @@ var d = torch.Tensor.fromObject({
 
 ## Installation
 
-This project uses `cmake-js` to build Node extension. You will need to download [the preview build of libtorch](https://pytorch.org/get-started/locally/) and extract it to an accessible location. The build script assumes you put `libtorch` in the same directory as this library. E.g., if you checked out this library to `~/torch-js`, then `libtorch` should be at `~/libtorch`. Once you have that, you can run
+This project uses `cmake-js` to build Node extension. Once you have that, you can run
 
 ```bash
 yarn install

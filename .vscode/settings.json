@@ -32,7 +32,5 @@
     "hashtable": "cpp",
     "unordered_map": "cpp",
     "unordered_set": "cpp"
-  },
-  "python.formatting.provider": "black",
-  "editor.formatOnSave": true
+  }
 }

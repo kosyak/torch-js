@@ -5,30 +5,25 @@
 #include <napi.h>
 #include <torch/script.h>
 
-namespace torchjs {
+namespace torchjs
+{
+  class ScriptModule : public Napi::ObjectWrap<ScriptModule>
+  {
+  public:
+    static Napi::Object Init(Napi::Env env, Napi::Object exports);
+    ScriptModule(const Napi::CallbackInfo &info);
 
-/**
- * Wrapper type on torch::jit::script::Module
- *
- * The loaded module should return only one torch::Tensor
- **/
-class ScriptModule : public Napi::ObjectWrap<ScriptModule> {
-public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
-  /**
-   * Take one input; the path to the module to load
-   **/
-  ScriptModule(const Napi::CallbackInfo &info);
+  private:
+    static Napi::FunctionReference constructor;
+    torch::jit::script::Module module_;
+    std::string path_;
 
-private:
-  static Napi::FunctionReference constructor;
-  std::shared_ptr<torch::jit::script::Module> module_;
-  std::string path_;
-  /**
-   * This can be called with a variable number of input Tensors.
-   **/
-  Napi::Value forward(const Napi::CallbackInfo &info);
-  Napi::Value toString(const Napi::CallbackInfo &info);
-};
+    Napi::Value forward(const Napi::CallbackInfo &info);
+    Napi::Value toString(const Napi::CallbackInfo &info);
+    Napi::Value cpu(const Napi::CallbackInfo &info);
+    Napi::Value cuda(const Napi::CallbackInfo &info);
+    static Napi::Value isCudaAvailable(const Napi::CallbackInfo &info);
+    static Napi::Value deRefIValue(Napi::Env env, const c10::IValue &iValue);
+  };
 
 } // namespace torchjs
