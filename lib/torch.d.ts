@@ -23,7 +23,7 @@ export class ScriptModule {
   toString(): string;
   cpu(): ScriptModule;
   cuda(): ScriptModule;
-  isCudaAvailable(): boolean;
+  static isCudaAvailable(): boolean;
 }
 
 export function rand(shape: number[], options?: {dtype?: number}): Tensor;

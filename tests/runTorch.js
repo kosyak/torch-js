@@ -6,6 +6,8 @@ var test_model_path = __dirname + "/test_model.pt";
 var script_module = new torch.ScriptModule(test_model_path);
 console.log(script_module.toString());
 
+console.log(`CUDA Avaliable: ${torch.ScriptModule.isCudaAvailable()}`)
+
 // Testing rand() with variable number of arguments
 var a = torch.rand(1, 5);
 console.log(a.toObject());
