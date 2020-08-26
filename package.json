@@ -1,12 +1,12 @@
 {
   "name": "torch-js",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Kittipat Virochsiri, arition",
   "license": "MIT",
   "scripts": {
-    "install": "yarn compile && yarn build",
+    "install": "yarn compile",
     "build": "rm -r dist/ && tsc && cp lib/torch.* dist/",
     "compile": "cmake-js compile",
     "rebuild": "cmake-js rebuild"

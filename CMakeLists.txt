@@ -33,7 +33,7 @@ execute_process(
 )
 endif(CUDA_FOUND)
 
-set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libtorch/)
+set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR}/libtorch/)
 
 # Use C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -57,5 +57,5 @@ target_link_libraries(${PROJECT_NAME} ${TORCH_LIBRARIES})
 
 add_custom_command(TARGET torch-js POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/libtorch/lib
+        ${CMAKE_CURRENT_BINARY_DIR}/libtorch/lib
         $<TARGET_FILE_DIR:torch-js>)
