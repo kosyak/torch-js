@@ -1,5 +1,6 @@
 #include "ScriptModule.h"
 
+#include <exception>
 #include "Tensor.h"
 #include "utils.h"
 
@@ -22,31 +23,45 @@ namespace torchjs
 
   ScriptModule::ScriptModule(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ScriptModule>(info)
   {
-    Napi::HandleScope scope(info.Env());
-    Napi::String value = info[0].As<Napi::String>();
-    path_ = value;
-    module_ = torch::jit::load(value);
+    try
+    {
+      Napi::HandleScope scope(info.Env());
+      Napi::String value = info[0].As<Napi::String>();
+      path_ = value;
+      module_ = torch::jit::load(value);
+    }
+    catch (const std::exception &e)
+    {
+      throw Napi::Error::New(info.Env(), e.what());
+    }
   }
 
   Napi::FunctionReference ScriptModule::constructor;
 
   Napi::Value ScriptModule::forward(const Napi::CallbackInfo &info)
   {
-    Napi::EscapableHandleScope scope(info.Env());
-    c10::IValue *outputs;
-    module_.eval();
-
-    // input: Tensor[]
-    // TODO: Support other type of IValue, e.g., list
-    auto len = info.Length();
-    std::vector<torch::jit::IValue> inputs;
-    for (size_t i = 0; i < len; ++i)
+    try
     {
-      Tensor *tensor = Napi::ObjectWrap<Tensor>::Unwrap(info[i].As<Napi::Object>());
-      inputs.push_back(tensor->tensor());
+      Napi::EscapableHandleScope scope(info.Env());
+      c10::IValue *outputs;
+      module_.eval();
+
+      // input: Tensor[]
+      // TODO: Support other type of IValue, e.g., list
+      auto len = info.Length();
+      std::vector<torch::jit::IValue> inputs;
+      for (size_t i = 0; i < len; ++i)
+      {
+        Tensor *tensor = Napi::ObjectWrap<Tensor>::Unwrap(info[i].As<Napi::Object>());
+        inputs.push_back(tensor->tensor());
+      }
+      outputs = &module_.forward(inputs);
+      return scope.Escape(deRefIValue(info.Env(), *outputs));
     }
-    outputs = &module_.forward(inputs);
-    return scope.Escape(deRefIValue(info.Env(), *outputs));
+    catch (const std::exception &e)
+    {
+      throw Napi::Error::New(info.Env(), e.what());
+    }
   }
 
   Napi::Value ScriptModule::deRefIValue(Napi::Env env, const c10::IValue &iValue)
@@ -113,26 +128,47 @@ namespace torchjs
 
   Napi::Value ScriptModule::cpu(const Napi::CallbackInfo &info)
   {
-    module_.to(at::kCPU);
-    return info.This();
+    try
+    {
+      module_.to(at::kCPU);
+      return info.This();
+    }
+    catch (const std::exception &e)
+    {
+      throw Napi::Error::New(info.Env(), e.what());
+    }
   }
 
   Napi::Value ScriptModule::cuda(const Napi::CallbackInfo &info)
   {
-    if (torch::cuda::is_available())
+    try
     {
-      module_.to(at::kCUDA);
+      if (torch::cuda::is_available())
+      {
+        module_.to(at::kCUDA);
+      }
+      else
+      {
+        throw Napi::Error::New(info.Env(), "CUDA is not aviliable");
+      }
+      return info.This();
     }
-    else
+    catch (const std::exception &e)
     {
-      throw Napi::Error::New(info.Env(), "CUDA is not aviliable");
+      throw Napi::Error::New(info.Env(), e.what());
     }
-    return info.This();
   }
 
   Napi::Value ScriptModule::isCudaAvailable(const Napi::CallbackInfo &info)
   {
-    return Napi::Boolean::New(info.Env(), torch::cuda::is_available());
+    try
+    {
+      return Napi::Boolean::New(info.Env(), torch::cuda::is_available());
+    }
+    catch (const std::exception &e)
+    {
+      throw Napi::Error::New(info.Env(), e.what());
+    }
   }
 
 } // namespace torchjs
