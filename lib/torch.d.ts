@@ -16,10 +16,17 @@ export class Tensor {
   cuda(): Tensor;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface TorchTypesArray extends Array<TorchTypes> {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface TorchTypesRecord extends Record<string | number | symbol, TorchTypes> {}
+
+type TorchTypes = TorchTypesArray | TorchTypesRecord | string | number | boolean | Tensor
+
 export class ScriptModule {
   constructor(path: string);
-  forward(inputs: Tensor): any;
-  forward(...inputs: Tensor[]): any;
+  forward(input: TorchTypes): TorchTypes;
+  forward(...inputs: TorchTypes[]): TorchTypes;
   toString(): string;
   cpu(): ScriptModule;
   cuda(): ScriptModule;

@@ -14,13 +14,13 @@ namespace torchjs
     static Napi::Object Init(Napi::Env, Napi::Object exports);
     static Napi::Object FromTensor(Napi::Env, const torch::Tensor &);
     static bool IsInstance(Napi::Object &);
+    static Napi::FunctionReference constructor;
     Tensor(const Napi::CallbackInfo &);
 
     torch::Tensor tensor();
 
   private:
     torch::Tensor tensor_;
-    static Napi::FunctionReference constructor;
 
     Napi::Value toString(const Napi::CallbackInfo &);
     Napi::Value toObject(const Napi::CallbackInfo &);

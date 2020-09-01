@@ -43,20 +43,17 @@ namespace torchjs
     try
     {
       Napi::EscapableHandleScope scope(info.Env());
-      c10::IValue *outputs;
+      c10::IValue outputs;
       module_.eval();
 
-      // input: Tensor[]
-      // TODO: Support other type of IValue, e.g., list
       auto len = info.Length();
       std::vector<torch::jit::IValue> inputs;
       for (size_t i = 0; i < len; ++i)
       {
-        Tensor *tensor = Napi::ObjectWrap<Tensor>::Unwrap(info[i].As<Napi::Object>());
-        inputs.push_back(tensor->tensor());
+        inputs.push_back(JSTypeToIValue(info.Env(), info[i]));
       }
-      outputs = &module_.forward(inputs);
-      return scope.Escape(deRefIValue(info.Env(), *outputs));
+      outputs = module_.forward(inputs);
+      return scope.Escape(IValueToJSType(info.Env(), outputs));
     }
     catch (const std::exception &e)
     {
@@ -64,11 +61,59 @@ namespace torchjs
     }
   }
 
-  Napi::Value ScriptModule::deRefIValue(Napi::Env env, const c10::IValue &iValue)
+  c10::IValue ScriptModule::JSTypeToIValue(Napi::Env env, const Napi::Value &jsValue)
   {
+    Napi::HandleScope scope(env);
+    if (jsValue.IsArray())
+    {
+      auto jsList = jsValue.As<Napi::Array>();
+      auto len = jsList.Length();
+      if (len == 0)
+      {
+        throw Napi::Error::New(env, "Empty array is not supported");
+      }
+      auto firstElement = JSTypeToIValue(env, jsList[(uint32_t)0]);
+      c10::List<c10::IValue> list(firstElement.type());
+      for (uint32_t i = 1; i < len; ++i)
+      {
+        list.push_back(JSTypeToIValue(env, jsList[i]));
+      }
+      return list;
+    }
+    else if (jsValue.IsObject())
+    {
+      auto jsObject = jsValue.As<Napi::Object>();
+      if (jsObject.InstanceOf(Tensor::constructor.Value()))
+      {
+        auto tensor = Napi::ObjectWrap<Tensor>::Unwrap(jsObject);
+        return c10::IValue(tensor->tensor());
+      }
+      throw Napi::Error::New(env, "Object/Dict input is not implemented");
+    }
+    else if (jsValue.IsNumber())
+    {
+      auto jsNumber = jsValue.As<Napi::Number>().DoubleValue();
+      return c10::IValue(jsNumber);
+    }
+    else if (jsValue.IsBoolean())
+    {
+      auto jsBool = jsValue.As<Napi::Boolean>().Value();
+      return c10::IValue(jsBool);
+    }
+    else if (jsValue.IsString())
+    {
+      auto jsString = jsValue.As<Napi::String>().Utf8Value();
+      return c10::IValue(jsString);
+    }
+    throw Napi::Error::New(env, "Unsupported javascript input type");
+  }
+
+  Napi::Value ScriptModule::IValueToJSType(Napi::Env env, const c10::IValue &iValue)
+  {
+    Napi::EscapableHandleScope scope(env);
     if (iValue.isTensor())
     {
-      return Tensor::FromTensor(env, iValue.toTensor());
+      return scope.Escape(Tensor::FromTensor(env, iValue.toTensor()));
     }
     else if (iValue.isList())
     {
@@ -76,9 +121,9 @@ namespace torchjs
       auto jsList = Napi::Array::New(env);
       for (auto i = 0; i < list.size(); i++)
       {
-        jsList[i] = deRefIValue(env, list[i]);
+        jsList[i] = IValueToJSType(env, list[i]);
       }
-      return jsList;
+      return scope.Escape(jsList);
     }
     else if (iValue.isGenericDict())
     {
@@ -86,27 +131,27 @@ namespace torchjs
       auto jsDict = Napi::Object::New(env);
       for (auto iter = dict.begin(); iter != dict.end(); iter++)
       {
-        auto key = deRefIValue(env, iter->key());
-        auto value = deRefIValue(env, iter->value());
+        auto key = IValueToJSType(env, iter->key());
+        auto value = IValueToJSType(env, iter->value());
         jsDict.Set(key, value);
       }
-      return jsDict;
+      return scope.Escape(jsDict);
     }
     else if (iValue.isInt())
     {
-      return Napi::Number::New(env, iValue.toInt());
+      return scope.Escape(scope.Escape(Napi::Number::New(env, iValue.toInt())));
     }
     else if (iValue.isDouble())
     {
-      return Napi::Number::New(env, iValue.toDouble());
+      return scope.Escape(Napi::Number::New(env, iValue.toDouble()));
     }
     else if (iValue.isBool())
     {
-      return Napi::Boolean::New(env, iValue.toBool());
+      return scope.Escape(Napi::Boolean::New(env, iValue.toBool()));
     }
     else if (iValue.isString())
     {
-      return Napi::String::New(env, iValue.toString().get()->string());
+      return scope.Escape(Napi::String::New(env, iValue.toString().get()->string()));
     }
     else if (iValue.isTuple())
     {
@@ -114,9 +159,9 @@ namespace torchjs
       auto jsList = Napi::Array::New(env);
       for (auto i = 0; i < list.size(); i++)
       {
-        jsList[i] = deRefIValue(env, list[i]);
+        jsList[i] = IValueToJSType(env, list[i]);
       }
-      return jsList;
+      return scope.Escape(jsList);
     }
     throw Napi::Error::New(env, "Unsupported output type from ScriptModule");
   }
