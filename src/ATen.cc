@@ -5,6 +5,7 @@
 #include "Tensor.h"
 #include "constants.h"
 #include "utils.h"
+#include <stdlib.h>
 
 namespace torchjs
 {
@@ -17,7 +18,16 @@ namespace torchjs
     Napi::Object Init(Napi::Env env, Napi::Object exports)
     {
       exports.Set("rand", Napi::Function::New(env, rand));
+      exports.Set("initenv", Napi::Function::New(env, initenv));
       return exports;
+    }
+
+    Napi::Value initenv(const Napi::CallbackInfo &info)
+    {
+      if (info.Length() != 1 || !info[0].IsString())
+        throw Napi::Error::New(info.Env(), "Only support one string as parameter");
+      auto path = info[0].ToString().Utf8Value();
+      return Napi::Boolean::New(info.Env(), putenv(std::string("PATH=" + path).c_str()));
     }
 
     Napi::Value rand(const Napi::CallbackInfo &info)

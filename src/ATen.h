@@ -11,5 +11,7 @@ namespace torchjs
 
     Napi::Value rand(const Napi::CallbackInfo &info);
 
+    Napi::Value initenv(const Napi::CallbackInfo &info);
+
   } // namespace aten
 } // namespace torchjs
