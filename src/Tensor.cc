@@ -167,8 +167,7 @@ namespace torchjs
   {
     try
     {
-      tensor_.to(at::kCPU);
-      return info.This();
+      return FromTensor(info.Env(), tensor_.cpu());
     }
     catch (const std::exception &e)
     {
@@ -182,7 +181,7 @@ namespace torchjs
     {
       if (torch::cuda::is_available())
       {
-        tensor_.to(at::kCUDA);
+        return FromTensor(info.Env(), tensor_.cuda());
       }
       else
       {
