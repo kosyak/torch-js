@@ -83,7 +83,7 @@ namespace torchjs
     else if (jsValue.IsObject())
     {
       auto jsObject = jsValue.As<Napi::Object>();
-      if (jsObject.InstanceOf(Tensor::constructor.Value()))
+      if (Tensor::IsInstance(jsObject))
       {
         auto tensor = Napi::ObjectWrap<Tensor>::Unwrap(jsObject);
         return c10::IValue(tensor->tensor());

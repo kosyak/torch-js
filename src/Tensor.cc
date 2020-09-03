@@ -62,6 +62,7 @@ namespace torchjs
                                           StaticMethod("fromObject", &Tensor::fromObject),
                                           InstanceMethod("cpu", &Tensor::cpu),
                                           InstanceMethod("cuda", &Tensor::cuda),
+                                          InstanceMethod("free", &Tensor::free),
                                       });
 
     constructor = Napi::Persistent(func);
@@ -193,6 +194,16 @@ namespace torchjs
     {
       throw Napi::Error::New(info.Env(), e.what());
     }
+  }
+
+  void Tensor::Finalize(Napi::Env env)
+  {
+    tensor_.getIntrusivePtr()->release_resources();
+  }
+
+  void Tensor::free(const Napi::CallbackInfo &info)
+  {
+    tensor_.getIntrusivePtr()->release_resources();
   }
 
 } // namespace torchjs

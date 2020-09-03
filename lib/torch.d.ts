@@ -14,6 +14,12 @@ export class Tensor {
   toString(): string;
   cpu(): Tensor;
   cuda(): Tensor;
+  /**
+   * Free the underlying tensor resources.
+   * 
+   * DO NOT use the object again after calling the method.
+   */
+  free(): void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
