@@ -28,6 +28,7 @@ namespace torchjs
     Napi::Value cpu(const Napi::CallbackInfo &info);
     Napi::Value cuda(const Napi::CallbackInfo &info);
     void free(const Napi::CallbackInfo &info);
+    bool is_free;
   };
 
 } // namespace torchjs

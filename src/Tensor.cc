@@ -86,7 +86,7 @@ namespace torchjs
     }
   }
 
-  Tensor::Tensor(const Napi::CallbackInfo &info) : ObjectWrap<Tensor>(info) {}
+  Tensor::Tensor(const Napi::CallbackInfo &info) : ObjectWrap<Tensor>(info), is_free(false) {}
 
   Napi::FunctionReference Tensor::constructor;
 
@@ -198,12 +198,20 @@ namespace torchjs
 
   void Tensor::Finalize(Napi::Env env)
   {
-    tensor_.getIntrusivePtr()->release_resources();
+    if (!is_free)
+    {
+      tensor_.getIntrusivePtr()->release_resources();
+      is_free = true;
+    }
   }
 
   void Tensor::free(const Napi::CallbackInfo &info)
   {
-    tensor_.getIntrusivePtr()->release_resources();
+    if (!is_free)
+    {
+      tensor_.getIntrusivePtr()->release_resources();
+      is_free = true;
+    }
   }
 
 } // namespace torchjs
