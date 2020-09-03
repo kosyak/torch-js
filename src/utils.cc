@@ -12,8 +12,8 @@ namespace torchjs
     torch::TensorOptions options;
     if (obj.Has(kDtype))
     {
-      options = options.dtype(static_cast<torch::ScalarType>(
-          obj.Get(kDtype).As<Napi::Number>().Int32Value()));
+      options = options.dtype(static_cast<torch::ScalarType>(obj.Get(kDtype).As<Napi::Number>().Int32Value()))
+                    .requires_grad(false);
     }
     return options;
   }

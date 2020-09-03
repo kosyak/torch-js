@@ -25,6 +25,7 @@ namespace torchjs
   {
     try
     {
+      torch::NoGradGuard no_grad;
       Napi::HandleScope scope(info.Env());
       Napi::String value = info[0].As<Napi::String>();
       path_ = value;
@@ -42,6 +43,7 @@ namespace torchjs
   {
     try
     {
+      torch::NoGradGuard no_grad;
       Napi::EscapableHandleScope scope(info.Env());
       c10::IValue outputs;
       module_.eval();

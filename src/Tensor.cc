@@ -42,6 +42,7 @@ namespace torchjs
         auto *data_ptr = data.As<Napi::TypedArrayOf<T>>().Data();
         auto shape = shapeArrayToVector(shape_array);
         torch::TensorOptions options(scalarType<T>());
+        options = options.requires_grad(false);
         auto torch_tensor = torch::empty(shape, options);
         memcpy(torch_tensor.data<T>(), data_ptr, sizeof(T) * torch_tensor.numel());
         return scope.Escape(Tensor::FromTensor(env, torch_tensor));
@@ -168,7 +169,14 @@ namespace torchjs
   {
     try
     {
-      return FromTensor(info.Env(), tensor_.cpu());
+      if (tensor_.is_cuda())
+      {
+        return FromTensor(info.Env(), tensor_.cpu());
+      }
+      else
+      {
+        return info.This();
+      }
     }
     catch (const std::exception &e)
     {
@@ -182,7 +190,14 @@ namespace torchjs
     {
       if (torch::cuda::is_available())
       {
-        return FromTensor(info.Env(), tensor_.cuda());
+        if (!tensor_.is_cuda())
+        {
+          return FromTensor(info.Env(), tensor_.cuda());
+        }
+        else
+        {
+          return info.This();
+        }
       }
       else
       {
