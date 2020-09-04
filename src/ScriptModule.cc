@@ -141,7 +141,7 @@ namespace torchjs
     }
     else if (iValue.isInt())
     {
-      return scope.Escape(scope.Escape(Napi::Number::New(env, iValue.toInt())));
+      return scope.Escape(Napi::Number::New(env, iValue.toInt()));
     }
     else if (iValue.isDouble())
     {
