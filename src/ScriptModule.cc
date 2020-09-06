@@ -57,6 +57,7 @@ namespace torchjs
       auto worker = new FunctionWorker<c10::IValue>(
           info.Env(),
           [=]() -> c10::IValue {
+            torch::NoGradGuard no_grad;
             return module_.forward(inputs);
           },
           [=](Napi::Env env, c10::IValue value) -> Napi::Value {
