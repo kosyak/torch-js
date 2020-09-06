@@ -3,6 +3,7 @@
 #include <exception>
 #include "Tensor.h"
 #include "utils.h"
+#include "FunctionWorker.h"
 
 namespace torchjs
 {
@@ -44,18 +45,26 @@ namespace torchjs
     try
     {
       torch::NoGradGuard no_grad;
-      Napi::EscapableHandleScope scope(info.Env());
-      c10::IValue outputs;
       module_.eval();
 
       auto len = info.Length();
-      std::vector<torch::jit::IValue> inputs;
+      auto inputs = std::vector<torch::jit::IValue>();
       for (size_t i = 0; i < len; ++i)
       {
         inputs.push_back(JSTypeToIValue(info.Env(), info[i]));
       }
-      outputs = module_.forward(inputs);
-      return scope.Escape(IValueToJSType(info.Env(), outputs));
+
+      auto worker = new FunctionWorker(
+          info.Env(),
+          [=]() -> c10::IValue {
+            return module_.forward(inputs);
+          },
+          [=](Napi::Env env, c10::IValue value) -> Napi::Value {
+            return IValueToJSType(env, value);
+          });
+
+      worker->Queue();
+      return worker->GetPromise();
     }
     catch (const std::exception &e)
     {

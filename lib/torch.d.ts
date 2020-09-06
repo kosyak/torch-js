@@ -31,8 +31,8 @@ type TorchTypes = TorchTypesArray | TorchTypesRecord | string | number | boolean
 
 export class ScriptModule {
   constructor(path: string);
-  forward(input: TorchTypes): TorchTypes;
-  forward(...inputs: TorchTypes[]): TorchTypes;
+  forward(input: TorchTypes): Promise<TorchTypes>;
+  forward(...inputs: TorchTypes[]): Promise<TorchTypes>;
   toString(): string;
   cpu(): ScriptModule;
   cuda(): ScriptModule;
