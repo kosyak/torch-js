@@ -53,8 +53,8 @@ namespace torchjs
       {
         inputs.push_back(JSTypeToIValue(info.Env(), info[i]));
       }
-
-      auto worker = new FunctionWorker(
+      
+      auto worker = new FunctionWorker<c10::IValue>(
           info.Env(),
           [=]() -> c10::IValue {
             return module_.forward(inputs);
