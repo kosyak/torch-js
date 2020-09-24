@@ -60,9 +60,6 @@ if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/torchvision")
     COMMAND git clone --depth 1 --branch v0.7.0 https://github.com/pytorch/vision
   )
   execute_process(
-    COMMAND git -C "${CMAKE_CURRENT_BINARY_DIR}/vision/" apply "${CMAKE_CURRENT_SOURCE_DIR}/patches/0001-cmake-patch.patch"
-  )
-  execute_process(
     COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DWITH_CUDA=${CUDA_FOUND} -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/libtorch -S "${CMAKE_CURRENT_BINARY_DIR}/vision/" -B "${CMAKE_CURRENT_BINARY_DIR}/vision/build/"
   )
   execute_process(
