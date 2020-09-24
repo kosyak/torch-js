@@ -1,10 +1,14 @@
 {
   "name": "@arition/torch-js",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Kittipat Virochsiri, arition",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arition/torch-js.git"
+  },
   "scripts": {
     "install": "yarn compile",
     "build": "rm -r dist/ && tsc && cp lib/torch.* dist/",
