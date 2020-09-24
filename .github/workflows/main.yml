@@ -2,7 +2,6 @@ name: CI
 
 on:
   push:
-    branches: [master]
     tags:
       - "v*.*.*"
 
@@ -26,19 +25,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install packages
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: upgrade --dev
+        run: yarn upgrade --dev
 
       - name: Build
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: build
+        run: yarn build
 
       - name: Publish
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          auth-token: ${{ secrets.NPM_TOKEN }}
-          cmd: publish
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
