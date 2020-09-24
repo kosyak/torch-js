@@ -25,12 +25,18 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install packages
-        run: npm update --dev
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: upgrade --dev
 
       - name: Build
-        run: npm run build
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build
 
       - name: Publish
-        run: npm publish
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
