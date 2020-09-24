@@ -26,17 +26,17 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install packages
-        uses: borales/actions-yarn@v2.0.0
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: upgrade --dev
 
       - name: Build
-        uses: borales/actions-yarn@v2.0.0
+        uses: borales/actions-yarn@v2.3.0
         with:
           cmd: build
 
       - name: Publish
-        uses: borales/actions-yarn@v2.0.0
+        uses: borales/actions-yarn@v2.3.0
         with:
           auth-token: ${{ secrets.NPM_TOKEN }}
           cmd: publish
