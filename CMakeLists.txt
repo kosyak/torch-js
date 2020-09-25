@@ -103,5 +103,5 @@ add_custom_command(TARGET torch-js POST_BUILD
 
 add_custom_command(TARGET torch-js POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_BINARY_DIR}/torchvision/bin"
+        "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib"
         $<TARGET_FILE_DIR:torch-js>)
