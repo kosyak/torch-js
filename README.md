@@ -1,5 +1,7 @@
 # TorchJS
 
+[![npm version](https://badge.fury.io/js/%40arition%2Ftorch-js.svg)](https://badge.fury.io/js/%40arition%2Ftorch-js)
+
 TorchJS is a JS binding for PyTorch. Its primary objective is to allow running [Torch Script](https://pytorch.org/docs/master/jit.html) inside Node.js program. Complete binding of libtorch is possible but is out-of-scope at the moment.
 
 ## Changes after fork
@@ -11,6 +13,14 @@ TorchJS is a JS binding for PyTorch. Its primary objective is to allow running [
 - Add ops from torchvision.
 
 - Add async support for ```forward``` function.
+
+## Install
+
+To install the forked version, you can install it from npm:
+
+```bash
+yarn add torch-js@npm:@arition/torch-js
+```
 
 ## Example
 
@@ -30,24 +40,26 @@ Once you have the trace file, you can load it into Node.js like this
 ```javascript
 const torch = require("torch-js");
 
-var test_model_path = "test/test_model.pt";
+(async () => {
+  var test_model_path = "test/test_model.pt";
 
-var script_module = new torch.ScriptModule(test_model_path);
-console.log(script_module.toString());
+  var script_module = new torch.ScriptModule(test_model_path);
+  console.log(script_module.toString());
 
-var a = torch.rand(1, 5);
-console.log(a.toObject());
-var b = torch.rand([1, 5]);
-console.log(b.toObject());
+  var a = torch.rand(1, 5);
+  console.log(a.toObject());
+  var b = torch.rand([1, 5]);
+  console.log(b.toObject());
 
-var c = script_module.forward(a, b);
-console.log(c.toObject());
+  var c = await script_module.forward(a, b);
+  console.log(c.toObject());
 
-var d = torch.tensor([[0.1, 0.2, 0.3, 0.4, 0.5]]);
-console.log(d.toObject());
+  var d = torch.tensor([[0.1, 0.2, 0.3, 0.4, 0.5]]);
+  console.log(d.toObject());
 
-var e = script_module.forward(c, d);
-console.log(e.toObject());
+  var e = await script_module.forward(c, d);
+  console.log(e.toObject());
+})();
 ```
 
 The program above will print something like this on console. Your result will be different from this since `a` and `b` are random variables.
