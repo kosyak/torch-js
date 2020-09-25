@@ -4,6 +4,10 @@ project (torch-js)
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(MACOS TRUE)
+endif()
+
 find_package(CUDA)
 if(CUDA_FOUND)
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/libtorch")
@@ -112,15 +116,22 @@ if(WIN32)
           "${CMAKE_CURRENT_BINARY_DIR}/torchvision/bin"
           $<TARGET_FILE_DIR:torch-js>)
 else()
-  if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "4")
+  if(MACOS)
     add_custom_command(TARGET torch-js POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib"
             $<TARGET_FILE_DIR:torch-js>)
   else()
-    add_custom_command(TARGET torch-js POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib64"
-            $<TARGET_FILE_DIR:torch-js>)
+    if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "4")
+      add_custom_command(TARGET torch-js POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E copy_directory
+              "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib"
+              $<TARGET_FILE_DIR:torch-js>)
+    else()
+      add_custom_command(TARGET torch-js POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E copy_directory
+              "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib64"
+              $<TARGET_FILE_DIR:torch-js>)
+    endif()
   endif()
 endif()
