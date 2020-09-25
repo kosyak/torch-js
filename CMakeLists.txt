@@ -80,7 +80,7 @@ if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/torchvision")
 endif()
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${CMAKE_CURRENT_BINARY_DIR}/torchvision/)
-find_package(torchvision)
+find_package(TorchVision)
 
 include_directories(${CMAKE_JS_INC})
 
