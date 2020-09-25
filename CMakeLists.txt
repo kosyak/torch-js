@@ -59,6 +59,11 @@ if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/torchvision")
   execute_process(
     COMMAND git clone --depth 1 --branch v0.7.0 https://github.com/pytorch/vision
   )
+  if(MSVC)
+    execute_process(
+      COMMAND git -C "${CMAKE_CURRENT_BINARY_DIR}/vision/" apply "${CMAKE_CURRENT_SOURCE_DIR}/patches/0001-cmake-patch.patch"
+    )
+  endif()
   execute_process(
     COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DWITH_CUDA=${CUDA_FOUND} -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/libtorch -S "${CMAKE_CURRENT_BINARY_DIR}/vision/" -B "${CMAKE_CURRENT_BINARY_DIR}/vision/build/"
   )
@@ -101,7 +106,14 @@ add_custom_command(TARGET torch-js POST_BUILD
         "${CMAKE_CURRENT_BINARY_DIR}/libtorch/lib"
         $<TARGET_FILE_DIR:torch-js>)
 
+if(WIN32)
+add_custom_command(TARGET torch-js POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_BINARY_DIR}/torchvision/bin"
+        $<TARGET_FILE_DIR:torch-js>)
+else()
 add_custom_command(TARGET torch-js POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib"
         $<TARGET_FILE_DIR:torch-js>)
+endif()
