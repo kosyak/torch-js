@@ -107,13 +107,20 @@ add_custom_command(TARGET torch-js POST_BUILD
         $<TARGET_FILE_DIR:torch-js>)
 
 if(WIN32)
-add_custom_command(TARGET torch-js POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_BINARY_DIR}/torchvision/bin"
-        $<TARGET_FILE_DIR:torch-js>)
+  add_custom_command(TARGET torch-js POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${CMAKE_CURRENT_BINARY_DIR}/torchvision/bin"
+          $<TARGET_FILE_DIR:torch-js>)
 else()
-add_custom_command(TARGET torch-js POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib"
-        $<TARGET_FILE_DIR:torch-js>)
+  if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "4")
+    add_custom_command(TARGET torch-js POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib"
+            $<TARGET_FILE_DIR:torch-js>)
+  else()
+    add_custom_command(TARGET torch-js POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_BINARY_DIR}/torchvision/lib64"
+            $<TARGET_FILE_DIR:torch-js>)
+  endif()
 endif()
