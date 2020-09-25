@@ -27,7 +27,11 @@ namespace torchjs
       if (info.Length() != 1 || !info[0].IsString())
         throw Napi::Error::New(info.Env(), "Only support one string as parameter");
       auto path = info[0].ToString().Utf8Value();
-      return Napi::Boolean::New(info.Env(), putenv(std::string("PATH=" + path).c_str()));
+      #ifdef _WIN32
+      return Napi::Boolean::New(info.Env(), putenv(std::string("PATH=" + path).c_str()) == 0);
+      #else
+      return Napi::Boolean::New(info.Env(), setenv("PATH", path.c_str(), 1) == 0);
+      #endif
     }
 
     Napi::Value rand(const Napi::CallbackInfo &info)
