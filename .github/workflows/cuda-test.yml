@@ -1,9 +1,9 @@
-name: publish
+name: CI
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches: [cuda-test]
+  pull_request:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -58,19 +58,18 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: '14'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "14"
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
 
       - name: Install packages
         run: yarn upgrade --dev
 
       - name: Prebuild
-        run: yarn prebuild -u ${{ secrets.GITHUB_TOKEN }}
+        run: yarn prebuild
 
       - name: Build
         run: yarn build
-
-      - name: Publish
-        run: yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
