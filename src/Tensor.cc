@@ -64,6 +64,7 @@ namespace torchjs
                                           InstanceMethod("cpu", &Tensor::cpu),
                                           InstanceMethod("cuda", &Tensor::cuda),
                                           InstanceMethod("free", &Tensor::free),
+                                          InstanceMethod("clone", &Tensor::clone),
                                       });
 
     constructor = Napi::Persistent(func);
@@ -163,6 +164,12 @@ namespace torchjs
     {
       throw Napi::Error::New(info.Env(), e.what());
     }
+  }
+
+  Napi::Value Tensor::clone(const Napi::CallbackInfo &info)
+  {
+    auto newTensor = tensor_.clone();
+    return Tensor::FromTensor(info.Env(), newTensor);
   }
 
   Napi::Value Tensor::cpu(const Napi::CallbackInfo &info)

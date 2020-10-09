@@ -14,6 +14,7 @@ export class Tensor {
   toString(): string;
   cpu(): Tensor;
   cuda(): Tensor;
+  clone(): Tensor;
   /**
    * Free the underlying tensor resources.
    * 
