@@ -61,4 +61,11 @@ describe("Tensor creation", () => {
     expect(t2).toThrow("Invalid argument");
     expect(t3).toThrow("Invalid argument");
   });
+
+  test("Tensor clone", () => {
+    const t = torch.rand(2, 3);
+    const tObject = t.toObject();
+    const tCloneObject = t.clone().toObject();
+    expect(tObject).toEqual(tCloneObject);
+  });
 });
