@@ -30,9 +30,6 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Run test suite
-        run: yarn test
-
       - name: Publish
         run: yarn publish
         env:
