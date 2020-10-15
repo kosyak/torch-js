@@ -51,39 +51,3 @@ const res = await model.forward(inputA, inputB);
 ```
 
 More examples regarding tensor creation, ScriptModule operations, and loading models can be found in our [examples](./examples) folder.
-
-## Installation
-
-This project uses `cmake-js` to build Node extension. Once you have that, you can run
-
-```bash
-yarn install
-```
-
-And, to test, run:
-
-```bash
-node tests/runTorch.js
-```
-
-If it failed to run because `libmklml` is missing, you can download it from conda.
-
-```bash
-conda install libmklml
-```
-
-If conda's `lib` directory is in your path, then you should be able to run the command above. Otherwise, you can set environment variable to point to the directory.
-
-On macOS, it would be:
-
-```bash
-DYLD_LIBRARY_PATH=$CONDA_PREFIX/lib/ node tests/runTorch.js
-```
-
-On Linux, it should be:
-
-```bash
-LD_LIBRARY_PATH=$CONDA_PREFIX/lib/ node tests/runTorch.js
-```
-
-If there is any error loading the trace file, you might have to resolve it by installing the matching versions of PyTorch and libtorch and regenerate the file.
