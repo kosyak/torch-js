@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 project (torch-js)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -78,6 +78,13 @@ endif()
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${CMAKE_CURRENT_BINARY_DIR}/torchvision/)
 find_package(TorchVision)
+
+if(WIN32)
+elseif(APPLE)
+  set(CMAKE_BUILD_RPATH @loader_path;@executable_path)
+else()
+  set(CMAKE_BUILD_RPATH $ORIGIN)
+endif()
 
 include_directories(${CMAKE_JS_INC})
 
