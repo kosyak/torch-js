@@ -6,7 +6,7 @@ TorchJS is a JS binding for PyTorch. Its primary objective is to allow running [
 
 ## Changes after fork
 
-- Support `List` (Javascript `Array`), `Dict` (Javascript `Object`), `String`, `float` (Javascript `number`) as inputs and outputs.
+- Add support for `List` (Javascript `Array`), `Dict` (Javascript `Object`), `String`, `float` (Javascript `number`) as inputs and outputs.
 
 - Add CUDA support.
 
@@ -36,10 +36,6 @@ class TestModule(torch.nn.Module):
 ```
 
 Once you have the trace file, it may be loaded into NodeJS like this
-
-```javascript
-
-```
 
 ```javascript
 const torch = require("torch-js");

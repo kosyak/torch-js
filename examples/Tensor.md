@@ -24,14 +24,6 @@ const a = torch.rand([1, 5], {
 });
 ```
 
-### Calling rand using option parsing
-
-```js
-const a = torch.rand([1, 5], {
-  dtype: torch.float64,
-});
-```
-
 ## Tensor
 
 The tensor function may be used to create a tensor given an array of values that the tensor would consist of.
