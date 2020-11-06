@@ -25,7 +25,6 @@
       "plugins": ["@typescript-eslint"],
       "rules": {
         "indent": ["error", 2, { "SwitchCase": 1 }],
-        "linebreak-style": ["error", "unix"],
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-useless-constructor": 0
       }
