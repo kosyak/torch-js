@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 project (torch-js)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(MACOS TRUE)
-endif()
-
 find_package(CUDA)
 if(CUDA_FOUND)
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/libtorch")
