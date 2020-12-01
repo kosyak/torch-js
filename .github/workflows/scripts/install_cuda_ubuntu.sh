@@ -151,7 +151,7 @@ export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
 nvcc -V
 
 sudo apt-get install -y --no-install-recommends \
-    libcudnn7=${CUDNN_VERSION}-1+cuda${CUDA_MAJOR}.${CUDA_MINOR} \
-    libcudnn7-dev=${CUDNN_VERSION}-1+cuda${CUDA_MAJOR}.${CUDA_MINOR}
+    libcudnn8=${CUDNN_VERSION}-1+cuda${CUDA_MAJOR}.${CUDA_MINOR} \
+    libcudnn8-dev=${CUDNN_VERSION}-1+cuda${CUDA_MAJOR}.${CUDA_MINOR}
 
 sudo apt-mark hold libcudnn7
