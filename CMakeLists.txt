@@ -99,10 +99,18 @@ target_link_libraries(${PROJECT_NAME} TorchVision::TorchVision)
 
 target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
 
-add_custom_command(TARGET torch-js POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_BINARY_DIR}/libtorch/lib"
-        $<TARGET_FILE_DIR:torch-js>)
+if(WIN32)
+  # use move for windows since the libs are too large to be copied on github actions vm
+  add_custom_command(TARGET torch-js POST_BUILD
+      COMMAND powershell mv
+          "\"${CMAKE_CURRENT_BINARY_DIR}/libtorch/lib/*.dll\""
+          \"$<TARGET_FILE_DIR:torch-js>\")
+else()
+  add_custom_command(TARGET torch-js POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${CMAKE_CURRENT_BINARY_DIR}/libtorch/lib"
+          $<TARGET_FILE_DIR:torch-js>)
+endif()
 
 if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/torchvision/bin")
   add_custom_command(TARGET torch-js POST_BUILD

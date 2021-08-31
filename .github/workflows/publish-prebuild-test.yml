@@ -1,4 +1,4 @@
-name: publish-prebuild
+name: publish-prebuild-test
 
 on:
   push:

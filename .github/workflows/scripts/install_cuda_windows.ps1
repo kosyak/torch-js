@@ -152,5 +152,3 @@ $env:CUDA_PATH = "$($CUDA_PATH)"
 $env:CUDA_PATH_VX_Y = "$($CUDA_PATH_VX_Y)"
 Write-Output "CUDA_PATH $($CUDA_PATH)"
 Write-Output "CUDA_PATH_VX_Y $($CUDA_PATH_VX_Y)"
-
-tree $CUDA_PATH /f
