@@ -3,9 +3,9 @@
 
 
 "@arition/prebuild-install@^6.1.5":
-  version "6.1.5"
-  resolved "https://registry.yarnpkg.com/@arition/prebuild-install/-/prebuild-install-6.1.5.tgz#d9f51919970c163dd3b41f6b71b5a7d98c67c4d6"
-  integrity sha512-szbmefWGzYNHoD5wQxgBh+wx8+qOPMLs3TsL/T3hjcRfbWYiyK02USzoP0PSKBY3Va0tggMVDbliuwpsMCni4g==
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@arition/prebuild-install/-/prebuild-install-6.1.6.tgz#eb4c7a9f0b53f3991a1de9749f47370aa9990857"
+  integrity sha512-g03BRUWA0WrTGt6yEql2I+CtYohVxilx63UxL6L8rxZB3pId7sBGTGiXc4PZoa6Ir9Rq9LXXq3CyPrCiqpp3Xg==
   dependencies:
     detect-libc "^1.0.3"
     expand-template "^2.0.3"
@@ -23,9 +23,9 @@
     tunnel-agent "^0.6.0"
 
 "@arition/prebuild@^10.1.0":
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/@arition/prebuild/-/prebuild-10.1.0.tgz#79d243c3b026d5acf66a8eb6f4e91f1868da97d3"
-  integrity sha512-OooEXxB+ORKk3OSFEK//Fa1S8hs7bJlEVP43/iWW0dtiKT3XUVKf+gJtF+wMolqFYBTHfsGMzNO6AEKZuTaiVQ==
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/@arition/prebuild/-/prebuild-10.1.1.tgz#1427b3f8b4dfec48a3a8dd7cd602ae8a70d64d85"
+  integrity sha512-TkPKmfjMX4Fp543BLT6oaRpPMoRbWDP0433th8AgVVbRZ4AcvE2J0ubde+jo8FZs2qY/q6HNsLSphsGO6is0/w==
   dependencies:
     cmake-js "~5.2.0"
     detect-libc "^1.0.3"
