@@ -69,4 +69,14 @@ jobs:
         run: yarn upgrade --dev
 
       - name: Prebuild
+        run: yarn build-prebuild
+
+      - name: Check prebuild bundle size
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: powershell
+        run: |
+          ls prebuilds/@arition
+          ls build/Release
+
+      - name: Publish prebuild
         run: yarn build-prebuild -u ${{ secrets.GITHUB_TOKEN }}
