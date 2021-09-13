@@ -97,6 +97,11 @@ if(WIN32)
       COMMAND powershell mv
           "\"${CMAKE_CURRENT_BINARY_DIR}/libtorch/lib/*.dll\""
           \"$<TARGET_FILE_DIR:torch-js>\")
+  add_custom_command(TARGET torch-js POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E rm
+          "$<TARGET_FILE_DIR:torch-js>/cudnn_adv_train64_8.dll"
+          "$<TARGET_FILE_DIR:torch-js>/cudnn_cnn_train64_8.dll"
+          "$<TARGET_FILE_DIR:torch-js>/cudnn_ops_train64_8.dll")
 else()
   add_custom_command(TARGET torch-js POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy_directory
