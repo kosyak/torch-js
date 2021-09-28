@@ -12,7 +12,7 @@ else()
 file(DOWNLOAD https://download.pytorch.org/libtorch/cu${CUDA_VERSION_MAJOR}${CUDA_VERSION_MINOR}/libtorch-cxx11-abi-shared-with-deps-${PYTORCH_VERSION}%2Bcu${CUDA_VERSION_MAJOR}${CUDA_VERSION_MINOR}.zip ${CMAKE_CURRENT_SOURCE_DIR}/libtorch-cu${CUDA_VERSION_MAJOR}${CUDA_VERSION_MINOR}.zip SHOW_PROGRESS)
 endif()
 execute_process(
-  COMMAND unzip -o ${CMAKE_CURRENT_SOURCE_DIR}/libtorch-cu${CUDA_VERSION_MAJOR}${CUDA_VERSION_MINOR}.zip
+  COMMAND unzip -qq -o ${CMAKE_CURRENT_SOURCE_DIR}/libtorch-cu${CUDA_VERSION_MAJOR}${CUDA_VERSION_MINOR}.zip
 )
 endif()
 else()
@@ -25,7 +25,7 @@ else()
 file(DOWNLOAD https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-${PYTORCH_VERSION}%2Bcpu.zip ${CMAKE_CURRENT_SOURCE_DIR}/libtorch-cpu.zip)
 endif()
 execute_process(
-  COMMAND unzip -o ${CMAKE_CURRENT_SOURCE_DIR}/libtorch-cpu.zip
+  COMMAND unzip -qq -o ${CMAKE_CURRENT_SOURCE_DIR}/libtorch-cpu.zip
 )
 endif()
 endif(CUDA_FOUND)
@@ -51,7 +51,7 @@ if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/torchvision")
     COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DWITH_CUDA=${CUDA_FOUND} -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/libtorch -S "${CMAKE_CURRENT_BINARY_DIR}/vision/" -B "${CMAKE_CURRENT_BINARY_DIR}/vision/build/"
   )
   execute_process(
-    COMMAND ${CMAKE_COMMAND} --build "${CMAKE_CURRENT_BINARY_DIR}/vision/build" --config Release
+    COMMAND ${CMAKE_COMMAND} --build "${CMAKE_CURRENT_BINARY_DIR}/vision/build" --config Release -j ${PROCESSOR_COUNT}
   )
   execute_process(
     COMMAND ${CMAKE_COMMAND} --install "${CMAKE_CURRENT_BINARY_DIR}/vision/build" --prefix "${CMAKE_CURRENT_BINARY_DIR}/torchvision"
