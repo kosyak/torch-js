@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project (torch-js)
 
-set(PYTORCH_VERSION 1.9.1)
-set(PYTORCH_VISION_VERSION 0.10.1)
+set(PYTORCH_VERSION 1.11.0)
+set(PYTORCH_VISION_VERSION 0.12.0)
 find_package(CUDA)
 if(CUDA_FOUND)
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/libtorch")
@@ -48,7 +48,7 @@ if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/torchvision")
     COMMAND git -C "${CMAKE_CURRENT_BINARY_DIR}/vision/" apply "${CMAKE_CURRENT_SOURCE_DIR}/patches/0001-Remove-native-image-support.patch"
   )
   execute_process(
-    COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DWITH_CUDA=${CUDA_FOUND} -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/libtorch -S "${CMAKE_CURRENT_BINARY_DIR}/vision/" -B "${CMAKE_CURRENT_BINARY_DIR}/vision/build/"
+    COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DUSE_PYTHON=ON -DWITH_CUDA=${CUDA_FOUND} -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/libtorch -S "${CMAKE_CURRENT_BINARY_DIR}/vision/" -B "${CMAKE_CURRENT_BINARY_DIR}/vision/build/"
   )
   execute_process(
     COMMAND ${CMAKE_COMMAND} --build "${CMAKE_CURRENT_BINARY_DIR}/vision/build" --config Release -j ${PROCESSOR_COUNT}

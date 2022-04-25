@@ -25,8 +25,8 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
         env:
-          cuda: "11.1.1"
-          cudnn: "8.0.5.39"
+          cuda: "11.3.0"
+          cudnn: "8.2.1.32"
         run: |
           # Install CUDA via a powershell script
           .\.github\workflows\scripts\install_cuda_windows.ps1
@@ -42,8 +42,8 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
         env:
-          cuda: "11.1"
-          cudnn: "8.0.5.39"
+          cuda: "11.3.0"
+          cudnn: "8.2.1.32"
         run: |
           source ./.github/workflows/scripts/install_cuda_ubuntu.sh
           if [[ $? -eq 0 ]]; then
@@ -57,12 +57,12 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: '16'
 
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install packages
         run: yarn upgrade --dev

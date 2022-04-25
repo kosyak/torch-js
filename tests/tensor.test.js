@@ -57,7 +57,7 @@ describe("Tensor creation", () => {
     const t2 = () => torch.tensor(123);
     const t3 = () => torch.tensor(true);
 
-    expect(t).toThrow("Cannot read property 'length' of undefined");
+    expect(t).toThrow("Cannot read properties of undefined (reading 'length')");
     expect(t2).toThrow("Invalid argument");
     expect(t3).toThrow("Invalid argument");
   });
