@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-2019]
     if: "!contains(github.event.head_commit.message, 'ci skip')"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -24,12 +24,12 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: "14"
+          node-version: "16"
 
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.9"
+          python-version: "3.10"
 
       - name: Install packages
         run: yarn upgrade --dev

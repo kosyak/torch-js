@@ -2,7 +2,8 @@ name: publish-prebuild-test
 
 on:
   push:
-    branches: [cuda-test]
+    branches: 
+      - 'pytorch/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -13,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-2019]
     if: "!contains(github.event.head_commit.message, 'publish-prebuild skip')"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -21,12 +22,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install CUDA on windows-latest
-        if: ${{ matrix.os == 'windows-latest' }}
+      - name: Install CUDA on windows-2019
+        if: ${{ matrix.os == 'windows-2019' }}
         shell: powershell
         env:
-          cuda: "11.1.1"
-          cudnn: "8.0.5.39"
+          cuda: "11.3.0"
+          cudnn: "8.2.1.32"
         run: |
           # Install CUDA via a powershell script
           .\.github\workflows\scripts\install_cuda_windows.ps1
@@ -42,8 +43,8 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
         env:
-          cuda: "11.1"
-          cudnn: "8.0.5.39"
+          cuda: "11.3.0"
+          cudnn: "8.2.1.32"
         run: |
           source ./.github/workflows/scripts/install_cuda_ubuntu.sh
           if [[ $? -eq 0 ]]; then
@@ -57,15 +58,22 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: '16'
 
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install packages
         run: yarn upgrade --dev
 
       - name: Prebuild
         run: yarn build-prebuild
+
+      - name: Check prebuild bundle size
+        if: ${{ matrix.os == 'windows-2019' }}
+        shell: powershell
+        run: |
+          ls prebuilds/@arition
+          ls build/Release

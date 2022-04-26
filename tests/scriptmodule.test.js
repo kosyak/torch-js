@@ -14,7 +14,7 @@ describe("Constructor", () => {
   test("Call constructor from invalid model path", () => {
     const t = () => new torch.ScriptModule("/resources/no_model.pt");
     expect(t).toThrow(
-      new RegExp("open file failed, file path: /resources/no_model.pt.*")
+      new RegExp("open file failed because of errno 2 on fopen: No such file or directory, file path: /resources/no_model.pt")
     );
     expect(true).toEqual(true);
   });

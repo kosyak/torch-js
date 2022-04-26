@@ -12,6 +12,7 @@ $CUDA_KNOWN_URLS = @{
 }
 
 # cuda_runtime.h is in nvcc <= 10.2, but cudart >= 11.0
+# Package list: https://docs.nvidia.com/cuda/pdf/CUDA_Installation_Guide_Windows.pdf
 # @todo - make this easier to vary per CUDA version.
 $CUDA_PACKAGES_IN = @(
     "nvcc";
@@ -24,6 +25,7 @@ $CUDA_PACKAGES_IN = @(
     "nvrtc_dev";
     "cudart";
     "nsight_nvtx";
+    "thrust";
 )
 
 
