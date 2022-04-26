@@ -1,7 +1,7 @@
-import assert = require("assert");
-import torch = require("./torch");
+import assert = require('assert');
+import torch = require('./torch');
 
-export * from "./torch";
+export * from './torch';
 
 // eslint-disable-next-line no-use-before-define
 type Matrix = number[] | NestedArray;
@@ -33,7 +33,7 @@ function typedArrayType(dtype: number) {
     case torch.int32:
       return Int32Array;
     default:
-      throw new TypeError("Unsupported dtype");
+      throw new TypeError('Unsupported dtype');
   }
 }
 

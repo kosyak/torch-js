@@ -1,9 +1,7 @@
-import { describe, expect, test } from "@jest/globals";
+const torch = require('../dist');
 
-const torch = require("../dist");
-
-describe("Tensor creation", () => {
-  test("Tensor creation using valid array (1-D)", () => {
+describe('Tensor creation', () => {
+  test('Tensor creation using valid array (1-D)', () => {
     const a = torch.tensor([[1, 2, 3, 4, 5, 6]]).toObject();
     expect(a.data.length).toBe(6);
     expect(a.shape).toMatchObject([1, 6]);
@@ -13,7 +11,7 @@ describe("Tensor creation", () => {
     expect(b.shape).toMatchObject([1, 3]);
   });
 
-  test("Tensor creation using valid array (multi-dimensional)", () => {
+  test('Tensor creation using valid array (multi-dimensional)', () => {
     const a = torch
       .tensor([
         [0.1, 0.2, 0.3],
@@ -34,7 +32,7 @@ describe("Tensor creation", () => {
     expect(b.shape).toMatchObject([3, 3]);
   });
 
-  test("Tensor creation using valid object", () => {
+  test('Tensor creation using valid object', () => {
     const a = torch
       .tensor(new Float32Array([0.1, 0.2, 0.3, 0.4, 0.5]), {
         shape: [1, 5],
@@ -52,17 +50,17 @@ describe("Tensor creation", () => {
     expect(b.shape).toMatchObject([3, 3]);
   });
 
-  test("Tensor creation using invalid params", () => {
+  test('Tensor creation using invalid params', () => {
     const t = () => torch.tensor();
     const t2 = () => torch.tensor(123);
     const t3 = () => torch.tensor(true);
 
     expect(t).toThrow("Cannot read properties of undefined (reading 'length')");
-    expect(t2).toThrow("Invalid argument");
-    expect(t3).toThrow("Invalid argument");
+    expect(t2).toThrow('Invalid argument');
+    expect(t3).toThrow('Invalid argument');
   });
 
-  test("Tensor clone", () => {
+  test('Tensor clone', () => {
     const t = torch.rand(2, 3);
     const tObject = t.toObject();
     const tCloneObject = t.clone().toObject();

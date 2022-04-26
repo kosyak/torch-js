@@ -4,9 +4,18 @@
   },
   "extends": [
     "airbnb-base",
-    "prettier"
+    "plugin:prettier/recommended"
   ],
   "overrides": [
+    {
+      "files": [
+        "**/*.test.js"
+      ],
+      "env": {
+        "node": true,
+        "jest": true
+      }
+    },
     {
       "files": [
         "**/*.ts",
@@ -20,7 +29,7 @@
         "airbnb-typescript/base",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "prettier"
+        "plugin:prettier/recommended"
       ],
       "globals": {
         "Atomics": "readonly",

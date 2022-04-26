@@ -1,6 +1,6 @@
 {
   "name": "@arition/torch-js",
-  "version": "0.12.3",
+  "version": "0.13.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Kittipat Virochsiri, arition, raghavmecheri",
@@ -36,6 +36,7 @@
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "lint-staged": "^12.4.0",
