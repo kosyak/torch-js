@@ -14,7 +14,7 @@ describe("Constructor", () => {
   test("Call constructor from invalid model path", () => {
     const t = () => new torch.ScriptModule("/resources/no_model.pt");
     expect(t).toThrow(
-      new RegExp("open file failed because of errno 2 on fopen: No such file or directory, file path: /resources/no_model.pt")
+      /open file failed because of errno 2 on fopen: No such file or directory, file path: \/resources\/no_model.pt/
     );
     expect(true).toEqual(true);
   });
@@ -74,6 +74,6 @@ describe("Forward function", () => {
       [0.1, 0.2, 0.3],
       [0.4, 0.5, 0.6],
     ]);
-    expect(scriptModule.forward(a)).rejects.toThrow(new RegExp(/[\s\S]/));
+    expect(scriptModule.forward(a)).rejects.toThrow(/[\s\S]/);
   });
 });
