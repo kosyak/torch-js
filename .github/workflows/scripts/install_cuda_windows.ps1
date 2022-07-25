@@ -105,7 +105,6 @@ $CUDA_REPO_PKG_LOCAL = Join-Path $TEMP_PATH "cuda_$($CUDA_VERSION_FULL)_windows_
 ## ------------
 
 # Get CUDA network installer
-Write-Output "conda path: $CONDA/bin/conda"
 Write-Output "Downloading CUDA Network Installer for $($CUDA_VERSION_FULL) from: $($CUDA_REPO_PKG_REMOTE)"
 Invoke-WebRequest $CUDA_REPO_PKG_REMOTE -OutFile $CUDA_REPO_PKG_LOCAL | Out-Null
 if(Test-Path -Path $CUDA_REPO_PKG_LOCAL){
@@ -133,7 +132,7 @@ $CUDA_PATH_VX_Y = "CUDA_PATH_V$($CUDA_MAJOR)_$($CUDA_MINOR)"
 # Append $CUDA_PATH/bin to path.
 # Set CUDA_PATH as an environmental variable
 
-& "$env:CONDA/bin/conda" install -y -c conda-forge cudnn=$($CUDNN_VERSION_FULL)
+conda install -y -c conda-forge cudnn=$($CUDNN_VERSION_FULL)
 
 # Set environmental variables in this session
 $env:CUDA_PATH = "$($CUDA_PATH)"

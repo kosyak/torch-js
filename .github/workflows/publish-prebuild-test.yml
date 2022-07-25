@@ -32,6 +32,12 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Setup Conda to install cudnn on windows-latest
+        uses: s-weigand/setup-conda@v1
+        if: ${{ matrix.os == 'windows-latest' }}
+        with:
+          activate-conda: false
+
       - name: Install CUDA on windows-latest
         if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
