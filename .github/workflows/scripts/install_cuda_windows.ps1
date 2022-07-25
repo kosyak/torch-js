@@ -94,7 +94,7 @@ if($CUDA_KNOWN_URLS.containsKey($CUDA_VERSION_FULL)){
 } else{
     # Guess what the url is given the most recent pattern (at the time of writing, 11)
     Write-Output "note: URL for CUDA ${$CUDA_VERSION_FULL} not known, estimating."
-    $CUDA_REPO_PKG_REMOTE="http://developer.download.nvidia.com/compute/cuda/$($CUDA_VERSION_FULL)/network_installers/cuda_$($CUDA_VERSION_FULL)_windows_network.exe"
+    $CUDA_REPO_PKG_REMOTE="https://developer.download.nvidia.com/compute/cuda/$($CUDA_VERSION_FULL)/network_installers/cuda_$($CUDA_VERSION_FULL)_windows_network.exe"
 }
 $TEMP_PATH = [System.IO.Path]::GetTempPath()
 $CUDA_REPO_PKG_LOCAL = Join-Path $TEMP_PATH "cuda_$($CUDA_VERSION_FULL)_windows_network.exe"
@@ -132,23 +132,7 @@ $CUDA_PATH_VX_Y = "CUDA_PATH_V$($CUDA_MAJOR)_$($CUDA_MINOR)"
 # Append $CUDA_PATH/bin to path.
 # Set CUDA_PATH as an environmental variable
 
-$CUDNN_ZIP_REMOTE = "http://developer.download.nvidia.com/compute/redist/cudnn/v$($CUDNN_MAJOR).$($CUDNN_MINOR).$($CUDNN_PATCH)/cudnn-$($CUDA_MAJOR).$($CUDA_MINOR)-windows-x64-v$($CUDNN_VERSION_FULL).zip"
-$CUDNN_ZIP_LOCAL = Join-Path $TEMP_PATH "cudnn.zip"
-
-Write-Output "Downloading CUDNN zip for $($CUDNN_VERSION_FULL) from: $($CUDNN_ZIP_REMOTE)"
-Invoke-WebRequest $CUDNN_ZIP_REMOTE -OutFile $CUDNN_ZIP_LOCAL | Out-Null
-if(Test-Path -Path $CUDNN_ZIP_LOCAL){
-    Write-Output "Downloading Complete"
-} else {
-    Write-Output "Error: Failed to download $($CUDNN_ZIP_LOCAL) from $($CUDNN_ZIP_REMOTE)"
-    exit 1
-}
-
-Write-Output "Installing CUDNN"
-
-Expand-Archive -Path $CUDNN_ZIP_LOCAL -DestinationPath $TEMP_PATH
-$CUDNN_EXPAND_LOCAL = Join-Path $TEMP_PATH "cuda"
-Copy-Item -Path "$($CUDNN_EXPAND_LOCAL)/*" -Destination $CUDA_PATH -Filter *.* -Force -recurse
+$CONDA/bin/conda install -y -c conda-forge cudnn=$($CUDNN_VERSION_FULL)
 
 # Set environmental variables in this session
 $env:CUDA_PATH = "$($CUDA_PATH)"
