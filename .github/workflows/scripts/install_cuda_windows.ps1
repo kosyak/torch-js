@@ -9,6 +9,7 @@ $CUDA_KNOWN_URLS = @{
     "11.0.2" = "https://developer.download.nvidia.com/compute/cuda/11.0.2/network_installers/cuda_11.0.2_win10_network.exe";
     "11.1.1" = "https://developer.download.nvidia.com/compute/cuda/11.1.1/network_installers/cuda_11.1.1_win10_network.exe";
     "11.3.1" = "https://developer.download.nvidia.com/compute/cuda/11.3.1/network_installers/cuda_11.3.1_win10_network.exe";
+    "11.6.2" = "https://developer.download.nvidia.com/compute/cuda/11.6.2/network_installers/cuda_11.6.2_windows_network.exe";
 }
 
 # cuda_runtime.h is in nvcc <= 10.2, but cudart >= 11.0
@@ -93,10 +94,10 @@ if($CUDA_KNOWN_URLS.containsKey($CUDA_VERSION_FULL)){
 } else{
     # Guess what the url is given the most recent pattern (at the time of writing, 11)
     Write-Output "note: URL for CUDA ${$CUDA_VERSION_FULL} not known, estimating."
-    $CUDA_REPO_PKG_REMOTE="http://developer.download.nvidia.com/compute/cuda/$($CUDA_VERSION_FULL)/network_installers/cuda_$($CUDA_VERSION_FULL)_win10_network.exe"
+    $CUDA_REPO_PKG_REMOTE="http://developer.download.nvidia.com/compute/cuda/$($CUDA_VERSION_FULL)/network_installers/cuda_$($CUDA_VERSION_FULL)_windows_network.exe"
 }
 $TEMP_PATH = [System.IO.Path]::GetTempPath()
-$CUDA_REPO_PKG_LOCAL = Join-Path $TEMP_PATH "cuda_$($CUDA_VERSION_FULL)_win10_network.exe"
+$CUDA_REPO_PKG_LOCAL = Join-Path $TEMP_PATH "cuda_$($CUDA_VERSION_FULL)_windows_network.exe"
 
 
 ## ------------
