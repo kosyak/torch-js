@@ -132,7 +132,7 @@ $CUDA_PATH_VX_Y = "CUDA_PATH_V$($CUDA_MAJOR)_$($CUDA_MINOR)"
 # Append $CUDA_PATH/bin to path.
 # Set CUDA_PATH as an environmental variable
 
-$CONDA/bin/conda install -y -c conda-forge cudnn=$($CUDNN_VERSION_FULL)
+$($CONDA)/bin/conda install -y -c conda-forge cudnn=$($CUDNN_VERSION_FULL)
 
 # Set environmental variables in this session
 $env:CUDA_PATH = "$($CUDA_PATH)"
