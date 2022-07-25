@@ -1,26 +1,28 @@
-From 0f0fe21cbf5e12214e1e7d9807cac8478714f300 Mon Sep 17 00:00:00 2001
+From cb1e7910b785fdb14a6deb52631c9415c49b5089 Mon Sep 17 00:00:00 2001
 From: arition <aritionkb@gmail.com>
 Date: Tue, 1 Dec 2020 00:17:44 -0800
 Subject: [PATCH] Remove native image support
 
 ---
- CMakeLists.txt | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ CMakeLists.txt | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 87179c147..404f5d4a7 100644
+index 4e222dbfa..404f5d4a7 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -24,8 +24,6 @@ if (USE_PYTHON)
+@@ -24,10 +24,6 @@ if (USE_PYTHON)
  endif()
  
  find_package(Torch REQUIRED)
 -find_package(PNG REQUIRED)
 -find_package(JPEG REQUIRED)
+-add_definitions(-DJPEG_FOUND)
+-add_definitions(-DPNG_FOUND)
  
  function(CUDA_CONVERT_FLAGS EXISTING_TARGET)
      get_property(old_flags TARGET ${EXISTING_TARGET} PROPERTY INTERFACE_COMPILE_OPTIONS)
-@@ -37,6 +35,14 @@ function(CUDA_CONVERT_FLAGS EXISTING_TARGET)
+@@ -39,6 +35,14 @@ function(CUDA_CONVERT_FLAGS EXISTING_TARGET)
      endif()
  endfunction()
  
@@ -35,7 +37,7 @@ index 87179c147..404f5d4a7 100644
  if(MSVC)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819")
    if(WITH_CUDA)
-@@ -80,7 +86,7 @@ FOREACH(DIR ${ALLOW_LISTED})
+@@ -82,7 +86,7 @@ FOREACH(DIR ${ALLOW_LISTED})
  ENDFOREACH()
  
  add_library(${PROJECT_NAME} SHARED ${ALL_SOURCES})
@@ -44,7 +46,7 @@ index 87179c147..404f5d4a7 100644
  
  if (USE_PYTHON)
    target_link_libraries(${PROJECT_NAME} PRIVATE Python3::Python)
-@@ -90,7 +96,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
+@@ -92,7 +96,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
    EXPORT_NAME TorchVision
    INSTALL_RPATH ${TORCH_INSTALL_PREFIX}/lib)
  
@@ -54,5 +56,5 @@ index 87179c147..404f5d4a7 100644
  set(TORCHVISION_CMAKECONFIG_INSTALL_DIR "share/cmake/TorchVision" CACHE STRING "install path for TorchVisionConfig.cmake")
  
 -- 
-2.34.1.windows.1
+2.37.1.windows.1
 

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project (torch-js)
 
-set(PYTORCH_VERSION 1.11.0)
-set(PYTORCH_VISION_VERSION 0.12.0)
+set(PYTORCH_VERSION 1.12.0)
+set(PYTORCH_VISION_VERSION 0.13.0)
 find_package(CUDA)
 if(CUDA_FOUND)
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/libtorch")

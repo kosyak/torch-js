@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-2019]
+        os: [ubuntu-latest, windows-latest]
     if: "!contains(github.event.head_commit.message, 'publish-prebuild skip')"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -22,12 +22,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install CUDA on windows-2019
-        if: ${{ matrix.os == 'windows-2019' }}
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Setup Conda to install cudnn on windows-latest
+        uses: s-weigand/setup-conda@v1
+        if: ${{ matrix.os == 'windows-latest' }}
+        with:
+          activate-conda: false
+
+      - name: Install CUDA on windows-latest
+        if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
         env:
-          cuda: "11.3.0"
-          cudnn: "8.2.1.32"
+          cuda: "11.6.2"
+          cudnn: "8.4.0.27"
         run: |
           # Install CUDA via a powershell script
           .\.github\workflows\scripts\install_cuda_windows.ps1
@@ -43,8 +59,8 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         shell: bash
         env:
-          cuda: "11.3.0"
-          cudnn: "8.2.1.32"
+          cuda: "11.6.2"
+          cudnn: "8.4.0.27"
         run: |
           source ./.github/workflows/scripts/install_cuda_ubuntu.sh
           if [[ $? -eq 0 ]]; then
@@ -55,16 +71,6 @@ jobs:
             echo "LD_LIBRARY_PATH=${CUDA_PATH}/lib:${LD_LIBRARY_PATH}" >> $GITHUB_ENV
           fi
 
-      - name: Install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '16'
-
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-
       - name: Install packages
         run: yarn upgrade --dev
 
@@ -72,7 +78,7 @@ jobs:
         run: yarn build-prebuild
 
       - name: Check prebuild bundle size
-        if: ${{ matrix.os == 'windows-2019' }}
+        if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
         run: |
           ls prebuilds/@arition

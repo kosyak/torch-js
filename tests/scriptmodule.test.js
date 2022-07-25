@@ -11,7 +11,7 @@ describe('Constructor', () => {
   // TODO -- Fine tune error message to remove stacktrace for error thrown on invalid model file
   test('Call constructor from invalid model path', () => {
     const t = () => new torch.ScriptModule('/resources/no_model.pt');
-    expect(t).toThrow(/open file failed because of errno 2 on fopen.*/);
+    expect(t).toThrow(/Unrecognized data format*/);
     expect(true).toEqual(true);
   });
 
