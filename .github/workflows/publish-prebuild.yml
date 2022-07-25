@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-2019]
+        os: [macos-latest, ubuntu-latest, windows-latest]
     if: "!contains(github.event.head_commit.message, 'publish-prebuild skip')"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -22,8 +22,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install CUDA on windows-2019
-        if: ${{ matrix.os == 'windows-2019' }}
+      - name: Install CUDA on windows-latest
+        if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
         env:
           cuda: "11.6.0"
@@ -72,7 +72,7 @@ jobs:
         run: yarn build-prebuild
 
       - name: Check prebuild bundle size
-        if: ${{ matrix.os == 'windows-2019' }}
+        if: ${{ matrix.os == 'windows-latest' }}
         shell: powershell
         run: |
           ls prebuilds/@arition
