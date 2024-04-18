@@ -1,3 +1,7 @@
+# Deprecated
+
+The whole repo will not be regularly updated. If someone is still interested in using the torch-js, feel free to open an issue and wait for the author to update. PRs are more welcome.
+
 # TorchJS
 
 [![npm version](https://badge.fury.io/js/%40arition%2Ftorch-js.svg)](https://badge.fury.io/js/%40arition%2Ftorch-js)
